@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+	<body>
+		<h2>Select Date</h2>
+		<div id="buttons">
+			<form action="" method="post">
+				{% for button in buttons %}
+					<input type="submit" name="button" value={{button.text}} />
+				{% endfor %}
+			</form>
+		</div>
+		<h2>Gracie's Menu For {{date}}</h2>
+		<div id="content">
+				{% autoescape false %}
+					{{content}}
+				{% endautoescape %}
+		</div>
+	</body>
+</html>
