@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, request
-from .parser import GraciesHtmlParser
+from .parser import DiningHtmlParser
 from .button import ButtonObject
 from typing import List
 import urllib.parse
@@ -9,6 +9,14 @@ import pickle
 
 app = Flask(__name__)
 
+class MenuCache():
+	cache_name = None
+	cache = None
+	def __init__(self, cache, cache_name):
+		self.cache_name = cache_name
+		self.cache = cache
+
+		
 def get(url: str) -> str:
     response = urllib.request.urlopen(url)
     return response.read().decode('utf-8')
@@ -30,43 +38,62 @@ def setup_buttons() -> List[ButtonObject]:
 	return buttons
 
 
-def save_cache(obj):
-	with open('/remote/testapi/Main/obj/' + 'gracies_menu_cache' + '.pkl', 'wb') as f:
+def save_obj(obj, name):
+	with open('/remote/testapi/Main/obj/' + name + '.pkl', 'wb') as f:
 		pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
 	
-def load_cache():
-	with open('/remote/testapi/Main/obj/' + 'gracies_menu_cache' + '.pkl', 'rb') as f:
+def load_obj(name):
+	with open('/remote/testapi/Main/obj/' + name + '.pkl', 'rb') as f:
 		return pickle.load(f)
 	
 
-def get_menu_content(date):
-	if date in cache:
-		return cache[date]
+def get_menu_content(date, cache, backup_url):
+	if date in cache.cache:
+		return cache.cache[date]
 	else:
 		values = {'menu_date': date}
-		html = post('https://www.rit.edu/fa/diningservices/gracies', values)
-		parser = GraciesHtmlParser()
+		html = post(backup_url, values)
+		parser = DiningHtmlParser()
 		parser.feed(html)
-		cache[date] = parser.get_output()
-		save_cache(cache)
+		cache.cache[date] = parser.get_output()
+		save_obj(cache.cache, cache.cache_name)
 		return parser.get_output()
 
 
+def get_date_displayed(request):
+	if request.method =='POST':
+		return request.form['button']
+	else:
+		return datetime.datetime.now().strftime("%Y-%m-%d")
+
+	
 @app.route("/")
 def root():
-	return redirect("http://bradsraspi.student.rit.edu/gracies", code=302)
+	return render_template('home.html')
 
 
+@app.route("/ritz", methods=['POST', 'GET'])
+def ritz():
+	date_displayed = get_date_displayed(request)
+	menu_content = get_menu_content(date_displayed, MenuCache(ritz_cache, 'ritz_menu_cache'), 'https://www.rit.edu/fa/diningservices/ritz-sports-zone')
+	return render_template('menu.html', content = menu_content, buttons = setup_buttons(), date = date_displayed, location = "Ritz")
+
+
+@app.route("/brickcity", methods=['POST', 'GET'])
+def brickcity():
+	date_displayed = get_date_displayed(request)
+	menu_content = get_menu_content(date_displayed, MenuCache(brickcity_cache, 'brickcity_menu_cache'), 'https://www.rit.edu/fa/diningservices/brick-city-cafe')
+	return render_template('menu.html', content = menu_content, buttons = setup_buttons(), date = date_displayed, location = "Brick City")
+	
+	
 @app.route("/gracies", methods=['POST', 'GET'])
 def gracies():
-	if request.method =='POST':
-		date_displayed = request.form['button']
-	else:
-		date_displayed = datetime.datetime.now().strftime("%Y-%m-%d")
-	
-	return render_template('gracies.html', content = get_menu_content(date_displayed), buttons = setup_buttons(), date = date_displayed)
+	date_displayed = get_date_displayed(request)
+	menu_content = get_menu_content(date_displayed, MenuCache(gracies_cache, 'gracies_menu_cache'), 'https://www.rit.edu/fa/diningservices/gracies')
+	return render_template('menu.html', content = menu_content, buttons = setup_buttons(), date = date_displayed, location = "Gracie's")
 
 	
-cache = load_cache()
-
+gracies_cache = load_obj('gracies_menu_cache')
+ritz_cache = load_obj('ritz_menu_cache')
+brickcity_cache = load_obj('brickcity_menu_cache')

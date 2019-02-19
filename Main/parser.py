@@ -1,11 +1,15 @@
 from html.parser import HTMLParser
 
-gracies_stations = ["Breakfast Standards", "Breakfast Meat", "Breakfast Potato", "Hot Breakfast Choices", "Breakfast Patries",
+dining_stations = ["Breakfast Standards", "Breakfast Meat", "Breakfast Potato", "Hot Breakfast Choices", "Breakfast Patries",
 					"Simply Eats Pasta and Sauces", "Simply Eats Vegetables, Salads and Starches", "Mongolian Grill", "Pizza Special",
-					"Simply Eats Meat Dishes", "Bakery", "East Bar", "West Bar", "Quick Serve Items"]
-important_stations = ["Mongolian Grill", "West Bar", "East Bar"]
+					"Simply Eats Meat Dishes", "Bakery", "East Bar", "West Bar", "Quick Serve Items", "Visiting Chef - Lunch",
+					"Visiting Chef - Dinner", "Soup", "Grill", "Pizza", "Panini", "Deli", "Breakfast Salad Bar", "Breakfast Sandwiches",
+					"Breakfast Grill", "Omelet Bar", "Main Entree", "Lunch Salad Bar", "Pot Luck", "Choices", "Wraps", "Soups",
+					"Deli Special", "Brick City Cafe Bar", "Visiting Chefs", "Vegetarian Entree"]
+
+important_stations = ["Mongolian Grill", "West Bar", "East Bar", "Visiting Chef - Lunch", "Visiting Chef - Dinner", "Visiting Chefs", "Main Entree"]
 					
-class GraciesHtmlParser(HTMLParser):
+class DiningHtmlParser(HTMLParser):
 	record_output = False
 	output = ""
 
@@ -17,7 +21,7 @@ class GraciesHtmlParser(HTMLParser):
 		return self.output
 	
 	def handle_starttag(self, tag, attrs):
-		if len(attrs) >0 and attrs[0][1] == '107':
+		if len(attrs) >0 and (attrs[0][1] == '107' or attrs[0][1] == '103' or attrs[0][1] == '108'):
 			self.record_output = True
 		
 	def handle_endtag(self, tag):
@@ -27,7 +31,7 @@ class GraciesHtmlParser(HTMLParser):
 		if self.record_output and not data.isspace():
 			if data == "BREAKFAST MENU" or data == "LUNCH MENU" or data == "DINNER MENU":
 				self.add_line("<h3>"+data+"</h3>")
-			elif data in gracies_stations:
+			elif data in dining_stations:
 				if data in important_stations:
 					self.add_line("<strong style='color: red'>"+data+"</strong><br/>")
 				else:
