@@ -93,7 +93,13 @@ def gracies():
 	menu_content = get_menu_content(date_displayed, MenuCache(gracies_cache, 'gracies_menu_cache'), 'https://www.rit.edu/fa/diningservices/gracies')
 	return render_template('menu.html', content = menu_content, buttons = setup_buttons(), date = date_displayed, location = "Gracie's")
 
+@app.route("/crossroads", methods=['POST', 'GET'])
+def crossroads():
+        date_displayed = get_date_displayed(request)
+        menu_content = get_menu_content(date_displayed, MenuCache(crossroads_cache, 'crossroads_menu_cache'), 'https://www.rit.edu/fa/diningservices/cafe-market-crossroads')
+        return render_template('menu.html', content = menu_content, buttons = setup_buttons(), date = date_displayed, location = 'Crossroads')
 	
 gracies_cache = load_obj('gracies_menu_cache')
 ritz_cache = load_obj('ritz_menu_cache')
 brickcity_cache = load_obj('brickcity_menu_cache')
+crossroads_cache = load_obj('crossroads_cache')

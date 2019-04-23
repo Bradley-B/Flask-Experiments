@@ -5,9 +5,10 @@ dining_stations = ["Breakfast Standards", "Breakfast Meat", "Breakfast Potato", 
 					"Simply Eats Meat Dishes", "Bakery", "East Bar", "West Bar", "Quick Serve Items", "Visiting Chef - Lunch",
 					"Visiting Chef - Dinner", "Soup", "Grill", "Pizza", "Panini", "Deli", "Breakfast Salad Bar", "Breakfast Sandwiches",
 					"Breakfast Grill", "Omelet Bar", "Main Entree", "Lunch Salad Bar", "Pot Luck", "Choices", "Wraps", "Soups",
-					"Deli Special", "Brick City Cafe Bar", "Visiting Chefs", "Vegetarian Entree"]
+					"Deli Special", "Brick City Cafe Bar", "Visiting Chefs", "Vegetarian Entree", "Salad", "Pasta", "Soup", "Asian Bar",
+					"Crossbar"]
 
-important_stations = ["Mongolian Grill", "West Bar", "East Bar", "Visiting Chef - Lunch", "Visiting Chef - Dinner", "Visiting Chefs", "Main Entree"]
+important_stations = ["Mongolian Grill", "West Bar", "East Bar", "Visiting Chef - Lunch", "Visiting Chef - Dinner", "Visiting Chefs", "Main Entree", "Visiting Chef"]
 					
 class DiningHtmlParser(HTMLParser):
 	record_output = False
@@ -21,7 +22,7 @@ class DiningHtmlParser(HTMLParser):
 		return self.output
 	
 	def handle_starttag(self, tag, attrs):
-		if len(attrs) >0 and (attrs[0][1] == '107' or attrs[0][1] == '103' or attrs[0][1] == '108'):
+		if len(attrs) >0 and (attrs[0][1] == '107' or attrs[0][1] == '103' or attrs[0][1] == '108' or attrs[0][1] == '104'):
 			self.record_output = True
 		
 	def handle_endtag(self, tag):
