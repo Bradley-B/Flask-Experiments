@@ -72,7 +72,6 @@ def get_date_displayed(request):
 def root():
 	return render_template('home.html')
 
-
 @app.route("/ritz", methods=['POST', 'GET'])
 def ritz():
 	date_displayed = get_date_displayed(request)
