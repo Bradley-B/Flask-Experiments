@@ -1,5 +1,12 @@
 <!doctype html>
 <html>
+	<head>
+		<style>
+		#table {margin:0px auto;background-color:#f9f;padding:20px;border:1px solid #000;}
+		#tablerow1col1, #tablerow2col1 {text-align:center;font-size:24pt;font-weight:bold;font-family:Verdana,Arial,Helvetica,serif;color:#600}
+		</style>
+	</head>
+
 	<body>
 		<h1>Imagine having colorful websites</h1>
 		<p>This post made by the no CSS gang</p>
@@ -7,7 +14,61 @@
 		<a href='/gracies'>Gracies Menu</a> <br/>
 		<a href='/ritz'>Ritz Menu</a> <br/>
 		<a href='/brickcity'>Brick City Menu</a> <br/>
-		<a href='/crossroads'>Crossroads Menu</a>
+		<a href='/crossroads'>Crossroads Menu</a> <br/>
+		
+		<br/><br/><br/><br/>
+<!--		<iframe src="http://free.timeanddate.com/countdown/i6ydx85k/n421/cf12/cm0/cu5/ct0/cs0/ca0/co1/cr0/ss0/cac600/cpc000/pcf9f/tcfff/fs100/szw576/szh243/tatAppointment/tac600/tptYay!!!/tpc000/iso2019-10-03T20:00:00/bo2/pa20" allowTransparency="true" frameborder="0" width="314" height="129"></iframe> -->
+				
+		<table border="0" cellpadding="0" cellspacing="0" id="table" width="600">
+			<tbody>
+				<tr>
+					<td id="tablerow1col1">
+					Appointment
+					</td>
+				</tr>
+				<tr>
+					<td id="tablerow2col1">
+					
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<script>
+		
+		// Set the date we're counting down to
+		var countDownDate = new Date("Oct 3, 2019 20:00:00").getTime();
+
+		var timeFunction = function() {
+		  // Get today's date and time
+		  var now = new Date().getTime();
+
+		  // Find the distance between now and the count down date
+		  var distance = countDownDate - now;
+
+		  // Time calculations for days, hours, minutes and seconds
+		  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+		  var hours = 24*days + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+		  // Display the result in the element with id="tablerow2col1"
+		  document.getElementById("tablerow2col1").innerHTML = hours + " hr "
+		  + minutes + " min " + seconds + " sec ";
+
+		  // If the count down is finished, write some text
+		  if (distance < 0) {
+			clearInterval(x);
+			document.getElementById("tablerow2col1").innerHTML = "0 hr 0 min 0 sec";
+		  }
+		}
+		
+		//update the count when the page loads
+		window.onload = timeFunction;
+		
+		// Update the count down every 1 second
+		var x = setInterval(timeFunction, 1000);
+		</script>
 		
 	</body>
 </html>
