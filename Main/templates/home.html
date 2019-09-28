@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<style>
-		#table {margin:0px auto;background-color:#f9f;padding:20px;border:1px solid #000;}
-		#tablerow1col1, #tablerow2col1 {text-align:center;font-size:24pt;font-weight:bold;font-family:Verdana,Arial,Helvetica,serif;color:#600}
+		#table {margin:0px auto;padding:20px;border:1px solid #000;}
+		#tablerow1col1, #tablerow2col1 {text-align:center;font-size:24pt;font-weight:bold;font-family:Verdana,Arial,Helvetica,serif}
 		</style>
 	</head>
 
@@ -23,7 +23,7 @@
 			<tbody>
 				<tr>
 					<td id="tablerow1col1">
-					Appointment
+					
 					</td>
 				</tr>
 				<tr>
@@ -36,16 +36,43 @@
 		
 		<script>
 		
-		// Set the date we're counting down to
-		var countDownDate = new Date("Oct 3, 2019 20:00:00").getTime();
-
+		// Set the date(s) we're counting down to
+		//var countDownPhases = [new Date("Oct 3, 2019 20:00:00").getTime(), new Date("Oct 6, 2019 14:00:00").getTime(), new Date("Nov 7, 2019 20:00").getTime()];
+		//var countDownPhases = [new Date("Sept 27, 2019 18:40:00").getTime(), new Date("Sept 27, 2019 18:41:00").getTime(), new Date("Sept 27, 2019 18:42").getTime()];
+	
+		var countDownPhases = [
+		{
+			time: new Date("Oct 3, 2019 20:00:00").getTime(),
+			text: "Next Appointment",
+			textColor: "#600000",
+			backgroundColor: "#f9f"
+		},
+		{
+			time: new Date("Oct 6, 2019 14:00:00").getTime(),
+			text: "Appointment Over",
+			textColor: "#ffffff",
+			backgroundColor: "#123456"
+		},
+		{
+			time: new Date("Nov 7, 2019 20:00").getTime(),
+			text: "Next Appointment",
+			textColor: "#600000",
+			backgroundColor: "#f9f"
+		}
+		]
+		
+		
 		var timeFunction = function() {
 		  // Get today's date and time
 		  var now = new Date().getTime();
 
 		  // Find the distance between now and the count down date
-		  var distance = countDownDate - now;
-
+		  var countDownPhase = 0;
+		  var distance = countDownPhases[countDownPhase].time - now;
+		  while(distance < 0 && countDownPhase < countDownPhases.length-1) {
+			distance = countDownPhases[++countDownPhase].time - now;
+		  }
+		  
 		  // Time calculations for days, hours, minutes and seconds
 		  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
 		  var hours = 24*days + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -56,6 +83,11 @@
 		  document.getElementById("tablerow2col1").innerHTML = hours + " hr "
 		  + minutes + " min " + seconds + " sec ";
 
+		  //set styles
+		  document.getElementById("table").style.backgroundColor = countDownPhases[countDownPhase].backgroundColor;
+		  document.getElementById("table").style.color = countDownPhases[countDownPhase].textColor;
+		  document.getElementById("tablerow1col1").innerHTML = countDownPhases[countDownPhase].text;
+		  
 		  // If the count down is finished, write some text
 		  if (distance < 0) {
 			clearInterval(x);
