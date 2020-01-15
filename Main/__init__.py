@@ -2,10 +2,12 @@ from flask import Flask, redirect, render_template, request
 from .parser import DiningHtmlParser
 from .button import ButtonObject
 from typing import List
+import json
 import urllib.parse
 import urllib.request
 import datetime
 import pickle
+import os
 
 app = Flask(__name__)
 
@@ -103,8 +105,14 @@ def crossroads():
 @app.route("/sh", methods=['GET'])
 def sh():
 	return render_template('sh.html')
-	
 
+@app.route("/chefs", methods=['GET'])
+def chefs():
+	with open('/remote/testapi/Main/data.json') as json_file:
+		data = json.load(json_file)
+	return render_template('chefs.html', chefs = data)
+
+	
 gracies_cache = load_obj('gracies_menu_cache')
 ritz_cache = load_obj('ritz_menu_cache')
 brickcity_cache = load_obj('brickcity_menu_cache')

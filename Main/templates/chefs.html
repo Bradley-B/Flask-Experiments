@@ -1,0 +1,10 @@
+<!doctype html>
+<html>
+	<body>
+		<div id="content">
+		{% for chef in chefs %}
+		<p><b>{{chef["name"]}}</b> <br/> {{chef["time"]}} <br/> {{chef["location-place"]}} <br/> {{chef["location-time"]}} </p><br/>
+		{% endfor %}
+		</div>
+	</body>
+</html>
