@@ -1,6 +1,5 @@
 import scrapy
 import os.path
-from os import path
 from scrapy.crawler import CrawlerProcess
 
 class VisitingChefSpider(scrapy.Spider):
