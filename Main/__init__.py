@@ -7,7 +7,18 @@ app = Flask(__name__)
 def root():
 	return render_template('home.html')
 
-	
+@app.route("/index.html")
+def index():
+	return render_template('index.html')
+
+@app.route("/elements.html")
+def elements():
+	return render_template('elements.html')
+
+@app.route("/generic.html")
+def generic():
+	return render_template('generic.html')
+
 @app.route("/sh", methods=['GET'])
 def sh():
 	return render_template('sh.html')

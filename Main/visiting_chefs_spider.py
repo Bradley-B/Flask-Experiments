@@ -1,4 +1,5 @@
 import scrapy
+import os
 import os.path
 from scrapy.crawler import CrawlerProcess
 
@@ -30,3 +31,5 @@ process = CrawlerProcess({
 
 process.crawl(VisitingChefSpider)
 process.start()
+
+os.rename('data.json', '/remote/testapi/Main/data.json')
