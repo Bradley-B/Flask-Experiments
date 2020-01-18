@@ -1,5 +1,6 @@
 from flask import Flask, redirect, render_template, request
 import json
+import os
 
 app = Flask(__name__)
 
@@ -25,6 +26,8 @@ def sh():
 
 @app.route("/chefs", methods=['GET'])
 def chefs():
-	with open('/remote/testapi/Main/data.json') as json_file:
+	filename = 'data.json' if os.stat("/remote/testapi/Main/data.json").st_size != 0 else 'empty.json'
+
+	with open('/remote/testapi/Main/' + filename) as json_file:
 		data = json.load(json_file)
 	return render_template('chefs.html', chefs = data)
