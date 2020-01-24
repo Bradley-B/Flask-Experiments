@@ -13,9 +13,7 @@ class VisitingChefSpider(scrapy.Spider):
 		for chef in response.css('div.col-xs-12.col-md-6.visitingchef-content'):
 			info_element = {
 				'name': chef.css('div.visitingchef-event::text').get().strip(),
-				'time': chef.css('div.visitingchef-time::text').get().strip(),
-				'location-place': chef.css('div.visitingchef-location::text').getall()[1].strip(),
-				'location-time': chef.css('div.visitingchef-location::text').getall()[0].strip()
+				'location': chef.css('div.visitingchef-location::text').getall()[1].strip()
             }
 			yield info_element
 
